@@ -8,17 +8,31 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var showSheet = false
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        ZStack {
+            VStack {
+                LolliCard()
+                    .onTapGesture {
+                        withAnimation(.easeOut(duration: 0.3)) {
+                            showSheet = true
+                        }
+                    }
+            }
+
+            // Show the custom sheet as an overlay
+            if showSheet {
+                Sheet(isPresented: $showSheet)
+                    .transition(.move(edge: .bottom)) // Slide-in transition
+                    .zIndex(1) // Ensure the sheet appears on top
+            }
         }
-        .padding()
+        .ignoresSafeArea() // Extend to safe areas
     }
 }
 
 #Preview {
     ContentView()
 }
+
